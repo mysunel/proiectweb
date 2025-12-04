@@ -1,0 +1,24 @@
+﻿@page "/teams"
+@model MyApp.Pages.Teams.IndexModel
+@{
+}
+ <h1>Pagina generala echipe</h1>
+ <table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nume</th>
+            <th>Oraș</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var team in Model.Teams)
+    {
+        <tr>
+            <td>@team.Idteam</td>
+            <td>@team.Name</td>
+            <td>@team.City</td>
+        </tr>
+    }
+    </tbody>
+</table>
