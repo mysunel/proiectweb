@@ -1,5 +1,75 @@
 ﻿@page "/teams/{id:int}"
+@using BackendRazor.Models
 @model MyApp.Pages.Teams.DetailsModel
 @{
 }
-<h1>Pagina detalii echipa</h1>
+<div class="relative min-h-screen">
+
+    <div id="team-bg" class="absolute inset-0 -z-10 flex items-center justify-center opacity-30">
+        <img src="~/images/@(Model.Team.Idteam + ".svg")"
+             alt="@Model.Team.Name background logo"
+             class="w-[1000px] h-[1000px] object-contain blur-xs" />
+    </div>
+
+  <!-- Conținut echipă -->
+  <div class="relative z-10 container mx-auto py-8">
+    <!-- Header echipă -->
+    <div class="flex items-center gap-6 mb-10">
+      <div class="w-28 h-28 flex items-center justify-center bg-slate-200 rounded-full shadow-lg">
+        <img src="~/images/@(Model.Team.Idteam + ".svg")"
+             alt="@Model.Team.Name logo"
+             class="max-w-full max-h-full object-contain" />
+      </div>
+
+      <div>
+        <h1 class="text-4xl font-extrabold uppercase tracking-wide">@Model.Team.Name</h1>
+        <p class="text-gray-600 italic">@Model.Team.City</p>
+      </div>
+    </div>
+
+    <!-- Coach card -->
+    <div class="mb-10">
+      <h2 class="text-2xl font-bold text-gray-800 mb-4">Coach</h2>
+      @if (Model.Coach != null)
+      {
+        <div class="bg-linear-to-r from-amber-200 to-amber-400 rounded-xl shadow-lg p-6 text-center">
+          <span class="block text-xl font-semibold">@(Model.Coach.Firstname + " " + Model.Coach.Lastname)</span>
+          <span class="block text-sm opacity-80">Head Coach</span>
+        </div>
+      }
+      else
+      {
+        <p class="text-gray-500">No coach assigned</p>
+      }
+    </div>
+
+    <!-- Players grid -->
+    <div>
+      <h2 class="text-2xl font-bold text-gray-800 pb-6">Players</h2>
+      @if (Model.Players.Any())
+      {
+        <ul class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          @foreach (var player in Model.Players)
+          {
+            <li class="bg-linear-to-t from-slate-200 to-slate-100 rounded-xl shadow-md hover:shadow-xl transition transform hover:-translate-y-1 p-6 text-center">
+              <span class="block text-lg font-bold text-gray-800 uppercase">@(player.Firstname + " " + player.Lastname)</span>
+              <span class="block text-sm text-gray-600 mt-1">@player.Position</span>
+            </li>
+          }
+        </ul>
+      }
+      else
+      {
+        <p class="text-gray-500">No players registered</p>
+      }
+    </div>
+  </div>
+</div>
+
+<script>
+    window.addEventListener('scroll', () => {
+        const bg = document.getElementById('team-bg');
+        const offset = window.scrollY * 0.3; // viteza mai lentă
+        bg.style.transform = `translateY(${offset}px)`;
+    });
+</script>

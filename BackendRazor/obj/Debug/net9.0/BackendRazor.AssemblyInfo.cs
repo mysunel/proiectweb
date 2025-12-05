@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BackendRazor")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+84ab7582f121647d7d40cfd9b25a113a18e1f20f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8679d006b7596fe687c15657222b707b32d73ab6")]
 [assembly: System.Reflection.AssemblyProductAttribute("BackendRazor")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BackendRazor")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

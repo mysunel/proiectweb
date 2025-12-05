@@ -1,0 +1,8 @@
+{
+  "devDependencies": {
+    "tailwindcss": "^4.1.17"
+  },
+  "scripts": {
+    "css:build": "npx @tailwindcss/cli -i ./wwwroot/css/tailwind.css -o ./wwwroot/css/site.css"
+  }
+}

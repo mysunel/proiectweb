@@ -2,23 +2,38 @@
 @model MyApp.Pages.Teams.IndexModel
 @{
 }
- <h1>Pagina generala echipe</h1>
- <table class="table">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Nume</th>
-            <th>Oraș</th>
-        </tr>
-    </thead>
-    <tbody>
+<h1 class="text-4xl font-extrabold mb-12 tracking-wide">
+    Teams
+</h1>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
     @foreach (var team in Model.Teams)
     {
-        <tr>
-            <td>@team.Idteam</td>
-            <td>@team.Name</td>
-            <td>@team.City</td>
-        </tr>
+        <a href="/teams/@team.Idteam" class="block group no-underline! text-inherit!">
+            <div class="rounded-2xl shadow-lg bg-linear-to-t from-amber-200 to-amber-100 
+                        transition transform duration-300 group-hover:-translate-y-2 group-hover:shadow-xl 
+                        flex flex-col items-center p-6 relative overflow-hidden">
+
+                <!-- Logo echipă -->
+                <div class="w-24 h-24 flex items-center justify-center mb-4 relative z-10">
+                    <img src="~/images/@(team.Idteam + ".svg")"
+                         alt="@team.Name logo"
+                         class="max-w-full max-h-full object-contain drop-shadow-md" />
+                </div>
+
+                <!-- Nume echipă -->
+                <span class="text-xl font-bold line-clamp-1 text-gray-900 text-center relative z-10">
+                    @team.Name
+                </span>
+
+                <!-- Oraș -->
+                <span class="text-sm text-gray-600 text-center mt-1 relative z-10">
+                    @team.City
+                </span>
+
+                <!-- Linie decorativă -->
+                <div class="mt-4 w-16 h-1 bg-orange-500 rounded-full group-hover:w-24 transition-all duration-300 relative z-10"></div>
+            </div>
+        </a>
     }
-    </tbody>
-</table>
+</div>
