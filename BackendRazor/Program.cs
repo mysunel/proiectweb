@@ -30,4 +30,9 @@ app.MapStaticAssets();
 app.MapRazorPages()
    .WithStaticAssets();
 
+app.MapGet("/", (HttpContext context) =>
+{
+    context.Response.Redirect("/Home", permanent: true);
+});
+
 app.Run();
