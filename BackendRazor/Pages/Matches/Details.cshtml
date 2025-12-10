@@ -1,6 +1,158 @@
 ﻿@page "/matches/{id:int}"
 @model MyApp.Pages.Matches.DetailsModel
+@using System.Linq 
+
 @{
 }
 
-<h1>Pagina detalii meci </h1>
+<div class="relative min-h-screen">
+
+    <div id="match-bg" class="absolute inset-0 -z-10 flex items-center justify-center opacity-20">
+        <img src="~/images/match-bg.svg"
+             alt="Match background"
+             class="w-[1000px] h-[1000px] object-contain blur-xs" />
+    </div>
+
+  <div class="relative z-10 container mx-auto py-12">
+    
+    <div class="text-center mb-8">
+      <p class="text-xl font-medium text-gray-600 italic">
+        @Model.Match?.Date.ToString("yyyy-MM-dd") 
+      </p>
+    </div>
+
+    <div class="grid grid-cols-3 gap-8 items-start">
+        
+        <div class="bg-white rounded-xl shadow-2xl p-6 text-center transition transform hover:scale-[1.02]">
+            <a href="/teams/@Model.HomeTeam?.Idteam" class="block group no-underline! text-inherit!">
+            
+                <div class="w-24 h-24 mx-auto flex items-center justify-center mb-4 relative z-10">
+                    <img src="~/images/@(Model.HomeTeam?.Idteam + ".svg")"
+                        alt="@Model.HomeTeam?.Name logo"
+                        class="max-w-full max-h-full object-contain drop-shadow-md" />
+                </div>
+
+                <h2 class="text-3xl font-extrabold text-blue-800 mb-2">
+                    @Model.HomeTeam?.Name 
+                </h2>
+                <p class="text-lg text-gray-600 italic">Home Team</p>
+    
+                <hr class="my-4"/>
+            </a>
+            
+            <p class="text-gray-700 font-semibold mb-3">Stats</p>
+            
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200 text-sm">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-3 py-2 text-left font-medium text-gray-500">Player</th>
+                            <th class="px-3 py-2 text-center font-medium text-gray-500">Points</th>
+                            <th class="px-3 py-2 text-center font-medium text-gray-500">Rebounds</th>
+                            <th class="px-3 py-2 text-center font-medium text-gray-500">Assists</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        @foreach (var stat in Model.HomeTeamStats)
+                        {
+                            <tr>
+                                <td class="px-3 py-2 whitespace-nowrap text-left">
+                                    @stat.IdplayerNavigation?.Firstname @stat.IdplayerNavigation?.Lastname
+                                </td>
+                                <td class="px-3 py-2 whitespace-nowrap text-center">@stat.Points</td>
+                                <td class="px-3 py-2 whitespace-nowrap text-center">@stat.Rebounds</td>
+                                <td class="px-3 py-2 whitespace-nowrap text-center">@stat.Assists</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                @if (!Model.HomeTeamStats.Any())
+                {
+                    <p class="mt-4 text-gray-500">No stats</p>
+                }
+            </div>
+        </div>
+
+        <div class="text-center p-4 flex flex-row items-center justify-center ">
+            @if (Model.Match?.Scorehome < Model.Match?.Scoreguest){
+                <span class="text-5xl font-black text-red-600 shadow-text">
+                    @Model.Match?.Scorehome
+                </span>
+                
+                <span class="text-5xl font-extrabold text-gray-700 mx-4">
+                    VS
+                </span>
+                <span class="text-5xl font-black text-green-600 shadow-text">
+                    @Model.Match?.Scoreguest
+                </span>
+            }
+            else {
+                <span class="text-5xl font-black text-green-600 shadow-text">
+                    @Model.Match?.Scorehome
+                </span>
+                
+                <span class="text-5xl font-extrabold text-gray-700 mx-4">
+                    VS
+                </span>
+                <span class="text-5xl font-black text-red-600 shadow-text">
+                    @Model.Match?.Scoreguest
+                </span>
+            }
+            
+        </div>
+        
+        
+        <div class="bg-white rounded-xl shadow-2xl p-6 text-center transition transform hover:scale-[1.02]">
+            
+            <a href="/teams/@Model.GuestTeam?.Idteam" class="block group no-underline! text-inherit!">
+
+                <div class="w-24 h-24 mx-auto flex items-center justify-center mb-4 relative z-10">
+                    <img src="~/images/@(Model.GuestTeam?.Idteam + ".svg")"
+                        alt="@Model.GuestTeam?.Name logo"
+                        class="max-w-full max-h-full object-contain drop-shadow-md" />
+                </div>
+
+                <h2 class="text-3xl font-extrabold text-green-800 mb-2">
+                    @Model.GuestTeam?.Name 
+                </h2>
+                <p class="text-lg text-gray-600 italic">Guest Teams</p>
+                
+                <hr class="my-4"/>
+            </a>
+
+            <p class="text-gray-700 font-semibold mb-3">Stats</p>
+            
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200 text-sm">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-3 py-2 text-left font-medium text-gray-500">Player</th>
+                            <th class="px-3 py-2 text-center font-medium text-gray-500">Points</th>
+                            <th class="px-3 py-2 text-center font-medium text-gray-500">Rebounds</th>
+                            <th class="px-3 py-2 text-center font-medium text-gray-500">Assists</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        @foreach (var stat in Model.GuestTeamStats)
+                        {
+                            <tr>
+                                <td class="px-3 py-2 whitespace-nowrap text-left">
+                                    @stat.IdplayerNavigation?.Firstname @stat.IdplayerNavigation?.Lastname
+                                </td>
+                                <td class="px-3 py-2 whitespace-nowrap text-center">@stat.Points</td>
+                                <td class="px-3 py-2 whitespace-nowrap text-center">@stat.Rebounds</td>
+                                <td class="px-3 py-2 whitespace-nowrap text-center">@stat.Assists</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                @if (!Model.GuestTeamStats.Any())
+                {
+                    <p class="mt-4 text-gray-500">No stats</p>
+                }
+            </div>
+
+        </div>
+    </div>
+  </div>
+</div>
