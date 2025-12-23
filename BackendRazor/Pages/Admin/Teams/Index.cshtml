@@ -1,0 +1,26 @@
+@page
+@model BackendRazor.Pages.Admin.Teams.IndexModel
+@{
+}
+
+<h2>Echipe</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Nume</th>
+            <th>Oraș</th>
+            <th>Antrenor</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var t in Model.Teams)
+    {
+        <tr>
+            <td>@t.Name</td>
+            <td>@t.City</td>
+            <td>@t.IdcoachNavigation.Firstname @t.IdcoachNavigation.Lastname</td>
+        </tr>
+    }
+    </tbody>
+</table>

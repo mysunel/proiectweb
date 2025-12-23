@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -11,24 +15,54 @@
 </head>
 <body class="pt-8 pb-8">
     <!-- Navbar fix -->
-    <header class="fixed top-0 left-0 w-full bg-white border-b shadow z-50">
-        <nav class="navbar navbar-expand-sm navbar-light">
-            <div class="container">
-                <a class="navbar-brand d-flex align-items-center gap-2" asp-page="/home">
-                    <img src="~/images/icon.svg""
-                         alt="FRB Logo"
-                         class="h-8 w-8" />
-                         FRB
-                </a>
-                <div class="navbar-collapse">
-                    <ul class="navbar-nav">
-                        <li class="nav-item"><a class="nav-link" asp-page="/teams/index">Teams</a></li>
-                        <li class="nav-item"><a class="nav-link" asp-page="/matches/index">Matches</a></li>
-                    </ul>
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <header class="fixed top-0 left-0 w-full bg-white border-b shadow z-50">
+            <nav class="navbar navbar-expand-sm navbar-light">
+                <div class="container">
+                    <a class="navbar-brand d-flex align-items-center gap-2" asp-page="/Admin/Panel">
+                        <img src="~/images/icon.svg""
+                            alt="FRB Logo"
+                            class="h-8 w-8" />
+                            FRB ADMIN
+                    </a>
+                    <div class="navbar-collapse">
+                        <ul class="navbar-nav">
+                            <li class="nav-item"><a class="nav-link" asp-page="/Admin/Teams/Index">Teams</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-page="/Admin/Matches/Index">Matches</a></li>
+                        </ul>
+                    </div>
+
+                    <form method="post" asp-page="/Admin/Logout">
+                        <button type="submit" class="btn btn-outline-danger">Logout</button>
+                    </form>
+
                 </div>
-            </div>
-        </nav>
-    </header>
+            </nav>
+        </header>
+    }
+    else
+    {
+        <header class="fixed top-0 left-0 w-full bg-white border-b shadow z-50">
+            <nav class="navbar navbar-expand-sm navbar-light">
+                <div class="container">
+                    <a class="navbar-brand d-flex align-items-center gap-2" asp-page="/home">
+                        <img src="~/images/icon.svg""
+                            alt="FRB Logo"
+                            class="h-8 w-8" />
+                            FRB
+                    </a>
+                    <div class="navbar-collapse">
+                        <ul class="navbar-nav">
+                            <li class="nav-item"><a class="nav-link" asp-page="/teams/index">Teams</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-page="/matches/index">Matches</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+    }
+    
 
     <!-- Conținut scrollabil -->
     <main class="container mt-20 mb-20">

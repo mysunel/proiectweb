@@ -1,4 +1,4 @@
-﻿@page "/admin/login"
+﻿@page "/Admin/Login"
 @model MyApp.Namespace.LoginModel
 @{
 }
@@ -6,6 +6,7 @@
 <h2 class="text-2xl font-bold mb-6">Login</h2>
 
 <form method="post" class="space-y-4">
+    <input type="hidden" asp-for="ReturnUrl" />
     <div>
         <label asp-for="Email" class="block text-sm font-medium">Email</label>
         <input asp-for="Email" class="border rounded px-3 py-2 w-full" />

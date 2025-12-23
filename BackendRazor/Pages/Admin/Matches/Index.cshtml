@@ -1,0 +1,28 @@
+@page
+@model BackendRazor.Pages.Admin.Matches.IndexModel
+@{
+}
+
+<h2>Meciuri</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Data</th>
+            <th>Echipa gazdă</th>
+            <th>Echipa oaspete</th>
+            <th>Scor</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var m in Model.Matches)
+    {
+        <tr>
+            <td>@m.Date.ToShortDateString()</td>
+            <td>@m.IdhomeNavigation.Name</td>
+            <td>@m.IdguestNavigation.Name</td>
+            <td>@m.Scorehome - @m.Scoreguest</td>
+        </tr>
+    }
+    </tbody>
+</table>

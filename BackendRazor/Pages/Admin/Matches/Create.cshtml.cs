@@ -1,17 +1,14 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 
-namespace MyApp.Namespace
+namespace BackendRazor.Pages.Admin.Matches
 {
     [Authorize]
-    public class PanelModel : PageModel
+    public class CreateModel : PageModel
     {
-        
         public void OnGet()
         {
         }
-
     }
 }

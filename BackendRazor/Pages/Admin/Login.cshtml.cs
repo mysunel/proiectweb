@@ -20,9 +20,18 @@ namespace MyApp.Namespace
 
         [BindProperty]
         public string Password { get; set; }  = string.Empty;
+        [BindProperty]
+        public string? ReturnUrl { get; set; }
 
-        public async Task<IActionResult> OnPostAsync()
+        public void OnGet(string? returnUrl = null)
         {
+            ReturnUrl = returnUrl ?? "/Admin/Panel";
+        }
+
+        public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
+        {
+            returnUrl ??= "/Admin/Panel";
+
             var user = await _userManager.FindByEmailAsync(Email);
             if (user == null)
             {
@@ -34,7 +43,7 @@ namespace MyApp.Namespace
 
             if (result.Succeeded)
             {
-                return RedirectToPage("/admin/panel");
+                return LocalRedirect(returnUrl);
             }
 
             ModelState.AddModelError(string.Empty, "Invalid login attempt.");
