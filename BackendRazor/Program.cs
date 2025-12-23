@@ -2,12 +2,20 @@ using Microsoft.AspNetCore.Builder;
 using BackendRazor.Models;
 using Microsoft.EntityFrameworkCore;
 using Npgsql.EntityFrameworkCore.PostgreSQL;
+using Microsoft.AspNetCore.Identity;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<FrbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
+    {
+        options.SignIn.RequireConfirmedAccount = false;
+    })
+    .AddEntityFrameworkStores<FrbContext>()
+    .AddDefaultTokenProviders();
+
 
 
 var app = builder.Build();
@@ -25,10 +33,25 @@ app.UseHttpsRedirection();
 app.UseRouting();
 
 app.UseAuthorization();
+app.UseAuthentication();
 
-app.MapStaticAssets();
-app.MapRazorPages()
-   .WithStaticAssets();
+using (var scope = app.Services.CreateScope())
+{
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+
+    var email = "admin@test.com";
+    var password = "Admin123!";
+
+    var user = await userManager.FindByEmailAsync(email);
+    if (user == null)
+    {
+        user = new IdentityUser { UserName = email, Email = email, EmailConfirmed = true };
+        await userManager.CreateAsync(user, password);
+    }
+};
+
+app.UseStaticFiles();
+app.MapRazorPages();
 
 app.MapGet("/", (HttpContext context) =>
 {

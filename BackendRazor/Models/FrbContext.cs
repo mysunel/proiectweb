@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace BackendRazor.Models;
 
-public partial class FrbContext : DbContext
+public partial class FrbContext : IdentityDbContext<IdentityUser>
 {
     public FrbContext()
     {
@@ -32,6 +34,14 @@ public partial class FrbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.Entity<Admin>().ToTable("admin", t => t.ExcludeFromMigrations());
+        modelBuilder.Entity<Coach>().ToTable("coach", t => t.ExcludeFromMigrations());
+        modelBuilder.Entity<Match>().ToTable("match", t => t.ExcludeFromMigrations());
+        modelBuilder.Entity<Player>().ToTable("player", t => t.ExcludeFromMigrations());
+        modelBuilder.Entity<PlayerMatchStat>().ToTable("player_match_stats", t => t.ExcludeFromMigrations());
+        modelBuilder.Entity<Team>().ToTable("team", t => t.ExcludeFromMigrations());
+
         modelBuilder.Entity<Admin>(entity =>
         {
             entity.HasKey(e => e.Idadmin).HasName("admin_pk");
