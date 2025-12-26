@@ -30,7 +30,7 @@ public partial class FrbContext : IdentityDbContext<IdentityUser>
     public virtual DbSet<Team> Teams { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseNpgsql("Host=localhost;Port=5423;Database=FRB;Username=admin;Password=pitesti");
+        => optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=FRB;Username=admin;Password=pitesti");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

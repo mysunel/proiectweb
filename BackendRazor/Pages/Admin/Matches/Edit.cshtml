@@ -1,5 +1,83 @@
 ﻿@page "{id:int}"
 @model BackendRazor.Pages.Admin.Matches.EditModel
 @{
+    ViewData["Title"] = "Edit Stats";
 }
- <h1>Pagina edit mecirui</h1>
+
+<div class="container mx-auto py-6 px-4">
+    <form method="post">
+        <input type="hidden" asp-for="Match.Idmatch" />
+        <input type="hidden" asp-for="Match.Idhome" />
+        <input type="hidden" asp-for="Match.Idguest" />
+
+        <div class="flex justify-between items-center mb-6 bg-white p-4 rounded-xl border">
+            <h1 class="text-2xl font-bold">Admin Match Panel</h1>
+            <div class="flex gap-2">
+                <button type="button" onclick="resetStats()" class="bg-red-100 text-red-600 px-4 py-2 rounded-lg font-bold">Reset Stats</button>
+                <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-lg font-bold">Save Changes</button>
+            </div>
+        </div>
+
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="mb-6 p-4 bg-red-50 text-red-700 border-l-4 border-red-500">
+                <div asp-validation-summary="All"></div>
+            </div>
+        }
+
+        <div class="grid lg:grid-cols-4 gap-6">
+            <div class="bg-white p-6 rounded-xl border h-fit shadow-sm">
+                <label class="block text-xs font-bold text-gray-400 uppercase">Match Date</label>
+                <input asp-for="Match.Date" type="date" class="w-full border rounded p-2 mb-4" />
+                
+                <label class="block text-xs font-bold text-blue-600">Home Score</label>
+                <input asp-for="Match.Scorehome" type="number" class="w-full text-2xl font-bold border rounded p-2 mb-4 text-center" />
+                
+                <label class="block text-xs font-bold text-green-600">Guest Score</label>
+                <input asp-for="Match.Scoreguest" type="number" class="w-full text-2xl font-bold border rounded p-2 text-center" />
+            </div>
+
+            <div class="lg:col-span-3 space-y-8">
+                <div class="bg-white rounded-xl border overflow-hidden">
+                    <div class="bg-blue-600 text-white px-4 py-2 font-bold italic">@Model.Match.IdhomeNavigation?.Name</div>
+                    @{ RenderTable(Model.HomePlayers); }
+                </div>
+
+                <div class="bg-white rounded-xl border overflow-hidden">
+                    <div class="bg-green-600 text-white px-4 py-2 font-bold italic">@Model.Match.IdguestNavigation?.Name</div>
+                    @{ RenderTable(Model.GuestPlayers); }
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@functions {
+    void RenderTable(List<BackendRazor.Models.Player> players)
+    {
+        <table class="min-w-full text-sm">
+            <thead class="bg-gray-50 text-xs uppercase text-gray-500 font-bold">
+                <tr><th class="px-4 py-3 text-left">Player</th><th class="w-20 py-3 text-center">Pts</th><th class="w-20 py-3 text-center">Reb</th><th class="w-20 py-3 text-center">Ast</th></tr>
+            </thead>
+            <tbody class="divide-y">
+                @foreach (var p in players)
+                {
+                    <tr>
+                        <td class="px-4 py-2 font-bold">@p.Firstname @p.Lastname</td>
+                        <td class="px-1 py-1"><input type="number" name="PlayerStats[@p.Idplayer].Points" value="@(Model.PlayerStats.ContainsKey(p.Idplayer) ? Model.PlayerStats[p.Idplayer].Points : "")" class="stat-input w-full border rounded p-1 text-center" /></td>
+                        <td class="px-1 py-1"><input type="number" name="PlayerStats[@p.Idplayer].Rebounds" value="@(Model.PlayerStats.ContainsKey(p.Idplayer) ? Model.PlayerStats[p.Idplayer].Rebounds : "")" class="stat-input w-full border rounded p-1 text-center" /></td>
+                        <td class="px-1 py-1"><input type="number" name="PlayerStats[@p.Idplayer].Assists" value="@(Model.PlayerStats.ContainsKey(p.Idplayer) ? Model.PlayerStats[p.Idplayer].Assists : "")" class="stat-input w-full border rounded p-1 text-center" /></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+}
+
+<script>
+    function resetStats() {
+        if(confirm("Clear all player stats?")) {
+            document.querySelectorAll('.stat-input').forEach(i => i.value = '');
+        }
+    }
+</script>

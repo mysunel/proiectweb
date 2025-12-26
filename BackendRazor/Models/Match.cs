@@ -17,9 +17,9 @@ public partial class Match
 
     public int Idguest { get; set; }
 
-    public virtual Team IdguestNavigation { get; set; } = null!;
+    public virtual Team? IdguestNavigation { get; set; } = null!;
 
-    public virtual Team IdhomeNavigation { get; set; } = null!;
+    public virtual Team? IdhomeNavigation { get; set; } = null!;
 
     public virtual ICollection<PlayerMatchStat> PlayerMatchStats { get; set; } = new List<PlayerMatchStat>();
 }

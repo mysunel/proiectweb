@@ -17,7 +17,7 @@ public partial class PlayerMatchStat
 
     public int Idmatch { get; set; }
 
-    public virtual Match IdmatchNavigation { get; set; } = null!;
+    public virtual Match? IdmatchNavigation { get; set; } = null!;
 
-    public virtual Player IdplayerNavigation { get; set; } = null!;
+    public virtual Player? IdplayerNavigation { get; set; } = null!;
 }

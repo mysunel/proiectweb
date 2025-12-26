@@ -3,6 +3,19 @@
 @using System.Linq 
 
 @{
+    string homeBgClass = "bg-white";
+    string guestBgClass = "bg-white";
+
+    if (Model.Match?.Scorehome > Model.Match?.Scoreguest)
+    {
+        homeBgClass = "bg-green-100"; 
+        guestBgClass = "bg-red-100";   
+    }
+    else if (Model.Match?.Scorehome < Model.Match?.Scoreguest)
+    {
+        homeBgClass = "bg-red-100";    
+        guestBgClass = "bg-green-100"; 
+    }
 }
 
 <div class="relative min-h-screen">
@@ -23,7 +36,7 @@
 
     <div class="grid grid-cols-3 gap-8 items-start">
         
-        <div class="bg-white rounded-xl shadow-2xl p-6 text-center transition transform hover:scale-[1.02]">
+        <div class="@homeBgClass rounded-xl shadow-2xl p-6 text-center transition transform hover:scale-[1.02]">
             <a href="/teams/@Model.HomeTeam?.Idteam" class="block group no-underline! text-inherit!">
             
                 <div class="w-24 h-24 mx-auto flex items-center justify-center mb-4 relative z-10">
@@ -99,9 +112,9 @@
                 </span>
             }
         </div>
-        
-        
-        <div class="bg-white rounded-xl shadow-2xl p-6 text-center transition transform hover:scale-[1.02]">
+
+
+        <div class="@guestBgClass rounded-xl shadow-2xl p-6 text-center transition transform hover:scale-[1.02]">
             
             <a href="/teams/@Model.GuestTeam?.Idteam" class="block group no-underline! text-inherit!">
 

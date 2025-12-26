@@ -1,28 +1,114 @@
 @page
 @model BackendRazor.Pages.Admin.Matches.IndexModel
 @{
+    ViewData["Title"] = "Admin - Manage Matches";
 }
 
-<h2>Meciuri</h2>
+<div class="container mx-auto py-8">
+    <div class="flex justify-between items-center mb-8">
+        <h1 class="text-3xl font-bold text-gray-800">Manage Matches</h1>
+        <a asp-page="./Create" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition shadow-lg font-bold">
+            + Add New Match
+        </a>
+    </div>
 
-<table>
-    <thead>
-        <tr>
-            <th>Data</th>
-            <th>Echipa gazdă</th>
-            <th>Echipa oaspete</th>
-            <th>Scor</th>
-        </tr>
-    </thead>
-    <tbody>
-    @foreach (var m in Model.Matches)
+    <div class="bg-white p-6 rounded-xl shadow-md mb-6 border border-gray-200">
+        <form method="get" class="flex flex-wrap gap-4 items-end">
+            
+            <div class="flex flex-col">
+                <label class="text-xs font-bold text-gray-500 uppercase mb-1">Team Name</label>
+                <input type="text" name="SearchString" value="@Model.SearchString" placeholder="Search team..." 
+                       class="border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 outline-none w-64 shadow-sm" />
+            </div>
+
+            <div class="flex flex-col">
+                <label class="text-xs font-bold text-gray-500 uppercase mb-1">Specific Date</label>
+                <input type="date" name="FilterDate" value="@Model.FilterDate?.ToString("yyyy-MM-dd")" 
+                       class="border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 outline-none shadow-sm" />
+            </div>
+            
+            <div class="flex flex-col">
+                <label class="text-xs font-bold text-gray-500 uppercase mb-1">Sort Order</label>
+                <select name="SortOrder" onchange="this.form.submit()" class="border rounded-lg px-4 py-2 bg-white outline-none shadow-sm">
+                    <option value="date_desc" selected="@(Model.SortOrder == "date_desc")">Newest First</option>
+                    <option value="date_asc" selected="@(Model.SortOrder == "date_asc")">Oldest First</option>
+                </select>
+            </div>
+
+            <div class="flex gap-2">
+                <button type="submit" class="bg-gray-800 text-white px-6 py-2 rounded-lg hover:bg-black transition font-bold shadow-md">
+                    Apply
+                </button>
+                <a asp-page="./Index" class="bg-gray-100 text-gray-600 px-4 py-2 rounded-lg hover:bg-gray-200 transition font-bold border border-gray-300">
+                    Clear
+                </a>
+            </div>
+
+            <input type="hidden" name="p" value="1" />
+        </form>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-xl overflow-hidden border border-gray-200">
+        <table class="min-w-full leading-normal text-left">
+            <thead>
+                <tr class="bg-gray-100 text-gray-600 text-xs font-bold uppercase tracking-wider">
+                    <th class="px-5 py-4 border-b-2 text-center">Date</th>
+                    <th class="px-5 py-4 border-b-2">Matchup</th>
+                    <th class="px-5 py-4 border-b-2 text-center">Score</th>
+                    <th class="px-5 py-4 border-b-2 text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var m in Model.Matches)
+                {
+                    <tr class="hover:bg-gray-50 transition border-b border-gray-200">
+                        <td class="px-5 py-4 text-sm text-center">
+                            @m.Date.ToString("dd MMM yyyy")
+                        </td>
+                        <td class="px-5 py-4 text-sm">
+                            <div class="font-bold text-gray-800">
+                                @m.IdhomeNavigation?.Name <span class="mx-2 text-gray-400 font-normal italic">vs</span> @m.IdguestNavigation?.Name
+                            </div>
+                        </td>
+                        <td class="px-5 py-4 text-sm text-center">
+                            <span class="bg-blue-100 text-blue-800 font-extrabold px-3 py-1 rounded-full border border-blue-200">
+                                @(m.Scorehome?.ToString() ?? "-") : @(m.Scoreguest?.ToString() ?? "-")
+                            </span>
+                        </td>
+                        <td class="px-5 py-4 text-sm text-center">
+                            <div class="flex justify-center items-center space-x-4">
+                                <a asp-page="./Edit" asp-route-id="@m.Idmatch" class="text-yellow-600 hover:text-yellow-800 font-bold transition">
+                                    Edit
+                                </a>
+
+                                <form method="post" asp-page-handler="Delete" asp-route-id="@m.Idmatch" 
+                                      onsubmit="return confirm('Delete match: @m.IdhomeNavigation?.Name vs @m.IdguestNavigation?.Name?')">
+                                    <button type="submit" class="text-red-600 hover:text-red-800 font-bold transition">
+                                        Delete
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    @if (Model.TotalPages > 1)
     {
-        <tr>
-            <td>@m.Date.ToShortDateString()</td>
-            <td>@m.IdhomeNavigation.Name</td>
-            <td>@m.IdguestNavigation.Name</td>
-            <td>@m.Scorehome - @m.Scoreguest</td>
-        </tr>
+        <div class="flex justify-center mt-8 space-x-2">
+            @for (int i = 1; i <= Model.TotalPages; i++)
+            {
+                <a asp-page="./Index" 
+                   asp-route-p="@i" 
+                   asp-route-SearchString="@Model.SearchString" 
+                   asp-route-SortOrder="@Model.SortOrder"
+                   asp-route-FilterDate="@Model.FilterDate?.ToString("yyyy-MM-dd")"
+                   class="px-4 py-2 border rounded-lg transition @(i == Model.CurrentPage ? "bg-blue-600 text-white border-blue-600" : "bg-white text-gray-700 hover:bg-gray-100 shadow-sm")">
+                    @i
+                </a>
+            }
+        </div>
     }
-    </tbody>
-</table>
+</div>
