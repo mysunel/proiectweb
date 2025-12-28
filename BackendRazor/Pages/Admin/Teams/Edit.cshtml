@@ -1,5 +1,155 @@
 ﻿@page "{id:int}"
 @model BackendRazor.Pages.Admin.Teams.EditModel
 @{
+    var today = DateTime.Today;
+    var maxBirthdate = today.AddYears(-16).ToString("yyyy-MM-dd");
+    var minBirthdate = today.AddYears(-80).ToString("yyyy-MM-dd");
 }
- <h1>Pagina edit echipe</h1>
+
+
+<div class="max-w-5xl mx-auto p-6 bg-white shadow-lg rounded-xl">
+
+    <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl font-semibold">Editeaza echipa</h2>
+
+        <a asp-page="Index"
+        class="px-4 py-2 bg-gray-300 text-gray-800 no-underline! rounded-md hover:bg-gray-400 transition">
+            Inapoi
+        </a>
+    </div>
+
+
+    <form method="post" class="space-y-8">
+        <div asp-validation-summary="ModelOnly" class="text-red-600 mb-4"></div>
+
+        <!-- ECHIPA -->
+        <div class="space-y-4">
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Nume echipa</label>
+                <input asp-for="Team.Name"
+                       class="w-full px-4 py-2 border border-gray-300 rounded-md" />
+                <span asp-validation-for="Team.Name" class="text-red-600 text-sm"></span>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Oras (max 3 litere)</label>
+                <input asp-for="Team.City" maxlength="3"
+                       class="w-full px-4 py-2 border border-gray-300 rounded-md uppercase" />
+                <span asp-validation-for="Team.City" class="text-red-600 text-sm"></span>
+            </div>
+
+        </div>
+
+        <!-- ANTRENOR -->
+        <div class="space-y-4">
+            <h3 class="text-xl font-semibold">Antrenor</h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Prenume</label>
+                    <input asp-for="Coach.Firstname"
+                           class="w-full px-4 py-2 border border-gray-300 rounded-md" />
+                    <span asp-validation-for="Coach.Firstname" class="text-red-600 text-sm"></span>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Nume</label>
+                    <input asp-for="Coach.Lastname"
+                           class="w-full px-4 py-2 border border-gray-300 rounded-md" />
+                    <span asp-validation-for="Coach.Lastname" class="text-red-600 text-sm"></span>
+                </div>
+
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Nationalitate</label>
+                    <input asp-for="Coach.Nationality"
+                           class="w-full px-4 py-2 border border-gray-300 rounded-md" />
+                    <span asp-validation-for="Coach.Nationality" class="text-red-600 text-sm"></span>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Data nasterii</label>
+                    <input asp-for="Coach.Birthdate" type="date"
+                           min="@minBirthdate" max="@maxBirthdate"
+                           class="w-full px-4 py-2 border border-gray-300 rounded-md" />
+                    <span asp-validation-for="Coach.Birthdate" class="text-red-600 text-sm"></span>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- JUCATORI -->
+        <div class="space-y-4">
+            <h3 class="text-xl font-semibold">Jucatori</h3>
+
+            @for (int i = 0; i < Model.Players.Count; i++)
+            {
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-4 p-4 border rounded-lg bg-gray-50">
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Prenume</label>
+                        <input asp-for="Players[i].Firstname"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md" />
+                        <span asp-validation-for="Players[i].Firstname" class="text-red-600 text-sm"></span>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Nume</label>
+                        <input asp-for="Players[i].Lastname"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md" />
+                        <span asp-validation-for="Players[i].Lastname" class="text-red-600 text-sm"></span>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Înaltime (cm)</label>
+                        <input asp-for="Players[i].Height" type="number"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md" />
+                        <span asp-validation-for="Players[i].Height" class="text-red-600 text-sm"></span>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Data nasterii</label>
+                        <input asp-for="Players[i].Birthdate" type="date"
+                               min="@minBirthdate" max="@maxBirthdate"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md" />
+                        <span asp-validation-for="Players[i].Birthdate" class="text-red-600 text-sm"></span>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Pozitie</label>
+                        <select asp-for="Players[i].Position"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                            <option value="">Selecteaza</option>
+                            <option>Power Forward</option>
+                            <option>Small Forward</option>
+                            <option>Shooting Guard</option>
+                            <option>Center</option>
+                            <option>Point Guard</option>
+                        </select>
+                        <span asp-validation-for="Players[i].Position" class="text-red-600 text-sm"></span>
+                    </div>
+
+                </div>
+            }
+        </div>
+
+        <!-- BUTON -->
+        <div class="flex justify-center">
+            <button type="submit"
+                    class="px-5 py-2 bg-green-600 text-white rounded-md! hover:bg-green-700 transition">
+                Salveaza
+            </button>
+        </div>
+
+    </form>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
