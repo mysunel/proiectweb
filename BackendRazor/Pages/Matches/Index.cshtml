@@ -5,152 +5,162 @@
     ViewData["Title"] = "Match Schedule";
 }
 
-<h1 class="text-4xl font-extrabold mb-12 tracking-wide text-gray-900">Match Schedule</h1>
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl md:text-4xl font-extrabold mb-12 tracking-wide text-gray-900 text-center md:text-left">Match Schedule</h1>
 
-<h2 class="text-3xl font-bold mb-4 mt-8 text-blue-700">Upcoming Matches (@Model.UpcomingMatches.Count)</h2>
+    <h2 class="text-2xl font-bold mb-6 mt-8 text-blue-700">Upcoming Matches (@Model.UpcomingMatches.Count)</h2>
 
-@if (Model.UpcomingMatches.Any())
-{
-    <div class="space-y-6"> 
-        @foreach (var match in Model.UpcomingMatches)
-        {
-            <a href="/matches/@(match.Idmatch)" class="block group no-underline! text-inherit!">
-                <div class="w-full p-4 rounded-xl shadow-lg bg-linear-to-r from-teal-700 to-teal-900
-                             transition transform duration-300 hover:scale-[1.01] hover:shadow-xl 
-                             flex items-center justify-between relative "> 
-                      
-                    <div class="w-16 h-16 flex items-center justify-center relative z-10 shrink-0">
-                        <img src="~/images/@(match.IdhomeNavigation?.Idteam + ".svg")"
-                             alt="logo" class="max-w-full max-h-full object-contain drop-shadow-md" />
-                    </div>
-
-                    <div class="grow text-center mx-4">
-                        <span class="text-xl font-bold text-white">
-                            @match.IdhomeNavigation?.Name vs @match.IdguestNavigation?.Name 
-                        </span>
-                        <br />
-                        <span class="text-sm text-gray-200 block mt-1 font-semibold">
-                            @match.Date.ToString("dd MMM yyyy")
-                        </span>
-                    </div>
-                    
-                    <div class="w-16 h-16 flex items-center justify-center relative z-10 shrink-0">
-                        <img src="~/images/@(match.IdguestNavigation?.Idteam + ".svg")"
-                             alt="logo" class="max-w-full max-h-full object-contain drop-shadow-md" />
-                    </div>
-                </div>
-           </a>
-        }
-    </div>
-}
-else
-{
-    <p class="text-gray-500 italic mt-4">No upcoming matches scheduled.</p>
-}
-
-<hr class="my-12 border-gray-300" />
-
-<div class="bg-gray-100 p-6 rounded-xl mb-8 shadow-inner">
-    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <h2 class="text-3xl font-bold text-green-700">Completed Matches</h2>
-        
-        <form method="get" class="flex flex-wrap items-center gap-3">
-            <div class="relative">
-                <input type="text" name="searchString" value="@Model.CurrentFilter" 
-                       placeholder="Search team name..." 
-                       class="pl-4 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none shadow-sm text-sm" />
-            </div>
-
-            <select name="sortOrder" onchange="this.form.submit()" 
-                    class="border border-gray-300 rounded-lg py-2 px-3 shadow-sm text-sm focus:ring-2 focus:ring-green-500 outline-none">
-                <option value="date_desc" selected="@(Model.CurrentSort == "date_desc" ? "selected" : null)">Newest First</option>
-                <option value="date_asc" selected="@(Model.CurrentSort == "date_asc" ? "selected" : null)">Oldest First</option>
-            </select>
-
-            <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition font-medium text-sm shadow-md">
-                Apply Filters
-            </button>
-            
-            @if (!string.IsNullOrEmpty(Model.CurrentFilter))
+    @if (Model.UpcomingMatches.Any())
+    {
+        <div class="grid grid-cols-1 gap-4"> 
+            @foreach (var match in Model.UpcomingMatches)
             {
-                <a asp-page="./Index" class="text-sm text-red-600 hover:underline ml-2">Clear Search</a>
+                <a href="/matches/@(match.Idmatch)" class="block group no-underline! text-inherit!">
+                    <div class="w-full p-6 rounded-2xl shadow-lg bg-linear-to-r from-teal-800 to-slate-900 border border-teal-700/30 transition-all hover:scale-[1.01] hover:shadow-xl"> 
+                        <div class="flex flex-col sm:flex-row items-center justify-between gap-6">
+                            
+                            <div class="flex flex-col items-center sm:flex-row gap-4 flex-1">
+                                <div class="w-20 h-20 bg-white/5 rounded-2xl p-3 flex items-center justify-center shrink-0">
+                                    <img src="~/images/@(match.IdhomeNavigation?.Idteam + ".svg")" 
+                                         alt="logo" class="max-w-full max-h-full object-contain drop-shadow-md" />
+                                </div>
+                                <div class="text-center sm:text-left">
+                                    <p class="text-teal-400 text-xs font-bold uppercase tracking-widest mb-1 italic">Home</p>
+                                    <h3 class="text-white font-bold text-xl">@match.IdhomeNavigation?.Name</h3>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-col items-center justify-center shrink-0">
+                                <div class="text-3xl font-black text-white/20 italic tracking-tighter">VS</div>
+                                <div class="px-4 py-1 bg-teal-500/20 rounded-full border border-teal-500/30 mt-2">
+                                    <span class="text-teal-300 text-xs font-bold uppercase tracking-tighter">
+                                        @match.Date.ToString("dd MMM yyyy")
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-col items-center sm:flex-row-reverse gap-4 flex-1">
+                                <div class="w-20 h-20 bg-white/5 rounded-2xl p-3 flex items-center justify-center shrink-0">
+                                    <img src="~/images/@(match.IdguestNavigation?.Idteam + ".svg")" 
+                                         alt="logo" class="max-w-full max-h-full object-contain drop-shadow-md" />
+                                </div>
+                                <div class="text-center sm:text-right">
+                                    <p class="text-teal-400 text-xs font-bold uppercase tracking-widest mb-1 italic">Guest</p>
+                                    <h3 class="text-white font-bold text-xl">@match.IdguestNavigation?.Name</h3>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+               </a>
             }
+        </div>
+    }
+    else
+    {
+        <p class="text-gray-500 italic mt-4 text-center md:text-left">No upcoming matches scheduled.</p>
+    }
+
+    <hr class="my-12 border-gray-300" />
+
+    <div class="bg-white p-6 rounded-2xl mb-8 shadow-sm border border-gray-200">
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+            <h2 class="text-2xl md:text-3xl font-bold text-green-700 text-center lg:text-left">Completed Matches</h2>
             
-            <input type="hidden" name="p" value="1" />
-        </form>
-    </div>
-</div>
-
-@if (Model.CompletedMatches.Any())
-{
-    <div class="space-y-6"> 
-        @foreach (var match in Model.CompletedMatches)
-        {
-            string gradientClass = "from-blue-200 to-white";
-            if (match.Scorehome > match.Scoreguest) gradientClass = "from-green-400 to-red-200";
-            else if (match.Scorehome < match.Scoreguest) gradientClass = "from-red-400 to-green-200";
-
-            <a href="/matches/@(match.Idmatch)" class="block group no-underline! text-inherit!">
-                <div class="w-full p-4 rounded-xl shadow-lg bg-linear-to-r @gradientClass
-                             transition transform duration-300 hover:scale-[1.01] hover:shadow-xl 
-                             flex items-center justify-between relative overflow-hidden"> 
-                      
-                    <div class="w-16 h-16 flex items-center justify-center relative z-10 shrink-0">
-                        <img src="~/images/@(match.IdhomeNavigation?.Idteam + ".svg")"
-                             alt="logo" class="max-w-full max-h-full object-contain" />
+            <form method="get" class="w-full lg:w-auto">
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                    <div class="relative grow">
+                        <input type="text" name="searchString" value="@Model.CurrentFilter" 
+                               placeholder="Search team..." 
+                               class="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 outline-none shadow-sm text-sm" />
                     </div>
 
-                    <div class="grow text-center mx-4">
-                        <span class="text-xl font-bold text-gray-900">
-                            @match.IdhomeNavigation?.Name vs @match.IdguestNavigation?.Name 
-                        </span>
-                        <br />
-                        <span class="text-2xl font-extrabold text-blue-700 mt-1 block">
-                            @match.Scorehome : @match.Scoreguest
-                        </span>
-                        <span class="text-sm text-gray-600 block mt-1">
-                            @match.Date.ToString("dd MMM yyyy") 
-                        </span>
+                    <div class="shrink-0">
+                        <select name="sortOrder" onchange="this.form.submit()" 
+                                class="w-full border border-gray-300 rounded-xl py-2.5 px-4 shadow-sm text-sm focus:ring-2 focus:ring-green-500 outline-none bg-white">
+                            <option value="date_desc" selected="@(Model.CurrentSort == "date_desc" ? "selected" : null)">Newest First</option>
+                            <option value="date_asc" selected="@(Model.CurrentSort == "date_asc" ? "selected" : null)">Oldest First</option>
+                        </select>
                     </div>
-                    
-                    <div class="w-16 h-16 flex items-center justify-center relative z-10 shrink-0">
-                        <img src="~/images/@(match.IdguestNavigation?.Idteam + ".svg")"
-                             alt="logo" class="max-w-full max-h-full object-contain" />
+
+                    <div class="flex items-center gap-2">
+                        <button type="submit" class="grow sm:flex-none bg-green-600 text-white px-6 py-2.5 rounded-xl hover:bg-green-700 transition font-bold text-sm shadow-md">
+                            Apply
+                        </button>
+                        
+                        @if (!string.IsNullOrEmpty(Model.CurrentFilter))
+                        {
+                            <a asp-page="./Index" class="grow sm:flex-none bg-red-50 text-red-600 px-4 py-2.5 rounded-xl border border-red-200 hover:bg-red-100 transition font-bold text-sm text-center shadow-sm">
+                                Clear
+                            </a>
+                        }
                     </div>
                 </div>
-           </a>
-        }
+                <input type="hidden" name="p" value="1" />
+            </form>
+       </div>
     </div>
 
-    <div class="flex justify-center items-center space-x-4 mt-10 pb-10">
-        @if (Model.CurrentPage > 1)
-        {
-            <a asp-page="./Index" 
-               asp-route-p="@(Model.CurrentPage - 1)" 
-               asp-route-sortOrder="@Model.CurrentSort" 
-               asp-route-searchString="@Model.CurrentFilter"
-               class="px-5 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition shadow-md">
-                &larr; Previous
-            </a>
-        }
+    @if (Model.CompletedMatches.Any())
+    {
+        <div class="space-y-6"> 
+            @foreach (var match in Model.CompletedMatches)
+            {
+                string gradientClass = "from-blue-200 to-white";
+                if (match.Scorehome > match.Scoreguest) gradientClass = "from-green-400 to-red-100";
+                else if (match.Scorehome < match.Scoreguest) gradientClass = "from-red-400 to-green-100";
 
-        <span class="font-semibold text-gray-700 px-4 py-2 bg-white border rounded-lg shadow-sm">
-            Page @Model.CurrentPage of @Model.TotalPages
-        </span>
+                <a href="/matches/@(match.Idmatch)" class="block group no-underline! text-inherit!">
+                    <div class="w-full p-6 rounded-xl shadow-lg bg-linear-to-r @gradientClass
+                                 transition transform duration-300 hover:scale-[1.01] hover:shadow-xl 
+                                 flex flex-col md:flex-row items-center justify-between gap-4 overflow-hidden"> 
+                          
+                        <div class="flex items-center justify-between w-full md:w-auto md:block">
+                            <img src="~/images/@(match.IdhomeNavigation?.Idteam + ".svg")" class="w-14 h-14 md:w-16 md:h-16 object-contain" />
+                            <span class="md:hidden text-2xl font-black text-gray-800">@match.Scorehome</span>
+                        </div>
 
-        @if (Model.CurrentPage < Model.TotalPages)
-        {
-            <a asp-page="./Index" 
-               asp-route-p="@(Model.CurrentPage + 1)" 
-               asp-route-sortOrder="@Model.CurrentSort" 
-               asp-route-searchString="@Model.CurrentFilter"
-               class="px-5 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition shadow-md">
-                Next &rarr;
-            </a>
-        }
-    </div>
-}
-else
-{
-    <p class="text-gray-500 italic mt-4 p-10 text-center bg-gray-50 rounded-lg">No completed matches found for this search.</p>
-}
+                        <div class="grow text-center">
+                            <span class="text-lg md:text-xl font-bold text-gray-900">
+                                @match.IdhomeNavigation?.Name <span class="hidden md:inline">vs</span> @match.IdguestNavigation?.Name 
+                            </span>
+                            <div class="hidden md:block text-3xl font-black text-blue-800 my-1">
+                                @match.Scorehome : @match.Scoreguest
+                            </div>
+                            <span class="text-xs font-bold uppercase text-gray-500 block mt-1">@match.Date.ToString("dd MMM yyyy")</span>
+                        </div>
+                        
+                        <div class="flex items-center justify-between w-full md:w-auto md:block">
+                            <span class="md:hidden text-2xl font-black text-gray-800">@match.Scoreguest</span>
+                            <img src="~/images/@(match.IdguestNavigation?.Idteam + ".svg")" class="w-14 h-14 md:w-16 md:h-16 object-contain" />
+                        </div>
+                    </div>
+                </a>
+            }
+        </div>
+
+        <div class="flex flex-col sm:flex-row justify-center items-center gap-4 mt-12 pb-10">
+            @if (Model.CurrentPage > 1)
+            {
+                <a asp-page="./Index" asp-route-p="@(Model.CurrentPage - 1)" 
+                   asp-route-sortOrder="@Model.CurrentSort" asp-route-searchString="@Model.CurrentFilter"
+                   class="w-full sm:w-auto text-center px-6 py-2 bg-gray-800 text-white rounded-lg shadow-md hover:bg-gray-700 transition font-bold">
+                   &larr; Previous
+                </a>
+            }
+
+            <span class="font-bold text-gray-700 px-6 py-2 bg-white border rounded-lg shadow-sm">
+                Page @Model.CurrentPage / @Model.TotalPages
+            </span>
+
+            @if (Model.CurrentPage < Model.TotalPages)
+            {
+                <a asp-page="./Index" asp-route-p="@(Model.CurrentPage + 1)" 
+                   asp-route-sortOrder="@Model.CurrentSort" asp-route-searchString="@Model.CurrentFilter"
+                   class="w-full sm:w-auto text-center px-6 py-2 bg-gray-800 text-white rounded-lg shadow-md hover:bg-gray-700 transition font-bold">
+                   Next &rarr;
+                </a>
+            }
+        </div>
+    }
+</div>
