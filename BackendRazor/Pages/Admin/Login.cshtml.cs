@@ -1,6 +1,8 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace MyApp.Namespace
 {
@@ -16,9 +18,11 @@ namespace MyApp.Namespace
         }
 
         [BindProperty]
+        [Required(ErrorMessage = "Emailul este obligatoriu.")]
         public string Email { get; set; } = string.Empty;
 
         [BindProperty]
+        [Required(ErrorMessage = "Parola este obligatorie.")]
         public string Password { get; set; }  = string.Empty;
         [BindProperty]
         public string? ReturnUrl { get; set; }
@@ -31,6 +35,10 @@ namespace MyApp.Namespace
         public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
         {
             returnUrl ??= "/Admin/Panel";
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
 
             var user = await _userManager.FindByEmailAsync(Email);
             if (user == null)

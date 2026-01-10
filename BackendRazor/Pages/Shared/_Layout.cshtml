@@ -7,7 +7,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"]Federatia Romana de Baschet</title>
+    <title>@ViewData["Title"] - FRB</title>
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
@@ -26,17 +26,21 @@
                             class="h-8 w-8" />
                             FRB ADMIN
                     </a>
-                    <div class="navbar-collapse">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarAdmin"
+                            aria-controls="navbarAdmin" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div id="navbarAdmin" class="collapse navbar-collapse">
                         <ul class="navbar-nav">
                             <li class="nav-item"><a class="nav-link" asp-page="/Admin/Teams/Index">Teams</a></li>
                             <li class="nav-item"><a class="nav-link" asp-page="/Admin/Matches/Index">Matches</a></li>
                         </ul>
+                    
+                        <form method="post" asp-page="/Admin/Logout" class="ms-auto">
+                            <button type="submit" class="btn btn-outline-danger">Logout</button>
+                        </form>
                     </div>
-
-                    <form method="post" asp-page="/Admin/Logout">
-                        <button type="submit" class="btn btn-outline-danger">Logout</button>
-                    </form>
-
                 </div>
             </nav>
         </header>
@@ -52,7 +56,13 @@
                             class="h-8 w-8" />
                             FRB
                     </a>
-                    <div class="navbar-collapse">
+
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarPublic"
+                            aria-controls="navbarPublic" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div id="navbarPublic" class="collapse navbar-collapse">
                         <ul class="navbar-nav">
                             <li class="nav-item"><a class="nav-link" asp-page="/teams/index">Teams</a></li>
                             <li class="nav-item"><a class="nav-link" asp-page="/matches/index">Matches</a></li>

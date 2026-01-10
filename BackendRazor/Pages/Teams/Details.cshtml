@@ -2,9 +2,9 @@
 @using BackendRazor.Models
 @model MyApp.Pages.Teams.DetailsModel
 @{
+  ViewData["Title"] = "Team Details";
 }
-<div class="relative min-h-screen">
-
+<div class="relative">
     <div id="team-bg" class="absolute inset-0 -z-10 flex items-center justify-center opacity-30">
         <img src="~/images/@(Model.Team.Idteam + ".svg")"
              alt="@Model.Team.Name background logo"
@@ -29,7 +29,7 @@
 
     <!-- Coach card -->
     <div class="mb-10">
-      <h2 class="text-2xl font-bold text-gray-800 mb-4">Coach</h2>
+      <h2 class="text-2xl font-bold text-gray-800 pb-4">Coach</h2>
       @if (Model.Coach != null)
       {
         <div class="bg-linear-to-r from-amber-200 to-amber-400 rounded-xl shadow-lg p-6 text-center">
@@ -44,8 +44,8 @@
     </div>
 
     <!-- Players grid -->
-    <div>
-      <h2 class="text-2xl font-bold text-gray-800 pb-6">Players</h2>
+    <div class="mb-10">
+      <h2 class="text-2xl font-bold text-gray-800 pb-4">Players</h2>
       @if (Model.Players.Any())
       {
         <ul class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
@@ -63,13 +63,74 @@
         <p class="text-gray-500">No players registered</p>
       }
     </div>
+
+    <!-- Match history -->
+    <div class="mb-10">
+      <h2 class="text-xl font-semibold pb-4">Match History</h3>
+      @if (Model.CompletedMatches.Any())
+      {
+          @foreach (var match in Model.CompletedMatches)
+          {
+              string gradientClass = "from-gray-300 to-gray-100";
+
+              if (match.Idhome == Model.Team.Idteam)
+              {
+                  if (match.Scorehome > match.Scoreguest)
+                      gradientClass = "from-green-400 to-green-100";
+                  else if (match.Scorehome < match.Scoreguest)
+                      gradientClass = "from-red-400 to-red-100";
+              }
+              else if (match.Idguest == Model.Team.Idteam)
+              {
+                  if (match.Scoreguest > match.Scorehome)
+                      gradientClass = "from-green-400 to-green-100";
+                  else if (match.Scoreguest < match.Scorehome)
+                      gradientClass = "from-red-400 to-red-100";
+              }
+
+              <a href="/matches/@(match.Idmatch)" class="block group no-underline! text-inherit pb-4">
+                  <div class="w-full p-2 rounded-xl shadow-lg bg-linear-to-r @gradientClass
+                              transition transform duration-300 hover:scale-[1.01] hover:shadow-xl 
+                              flex items-center justify-between relative overflow-hidden"> 
+                      
+                      <div class="w-12 h-12 flex items-center justify-center relative z-10 shrink-0">
+                          <img src="~/images/@(match.IdhomeNavigation?.Idteam + ".svg")"
+                              alt="logo gazda" class="max-w-full max-h-full object-contain" />
+                      </div>
+
+                      <div class="grow text-center mx-4">
+                          <span class="text-xl font-bold text-gray-900">
+                              @match.IdhomeNavigation?.Name vs @match.IdguestNavigation?.Name
+                          </span>
+                          <br />
+                          <span class="text-2xl font-extrabold text-blue-700 mt-1 block">
+                              @match.Scorehome : @match.Scoreguest
+                          </span>
+                          <span class="text-sm text-gray-600 block mt-1">
+                              @match.Date.ToString("dd MMM yyyy")
+                          </span>
+                      </div>
+                      
+                      <div class="w-12 h-12 flex items-center justify-center relative z-10 shrink-0">
+                          <img src="~/images/@(match.IdguestNavigation?.Idteam + ".svg")"
+                              alt="logo oaspete" class="max-w-full max-h-full object-contain" />
+                      </div>
+                  </div>
+              </a>
+          }
+      }
+      else
+      {
+          <p class="text-gray-600 mt-2">Nu exista meciuri jucate pentru aceasta echipa.</p>
+      }
+    </div>
   </div>
 </div>
 
 <script>
     window.addEventListener('scroll', () => {
         const bg = document.getElementById('team-bg');
-        const offset = window.scrollY * 0.3; // viteza mai lentă
+        const offset = window.scrollY * 0.3;
         bg.style.transform = `translateY(${offset}px)`;
     });
 </script>
