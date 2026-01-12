@@ -22,10 +22,10 @@ namespace BackendRazor.Pages.Admin.Matches
 
         public SelectList TeamOptions { get; set; } = default!;
 
-        public async Task<IActionResult> OnGetAsync()
+        public async Task<IActionResult> OnGetAsync() //populare dopdown uri echipe
         {
 
-            var teams = await _context.Teams.OrderBy(t => t.Name).ToListAsync();
+            var teams = await _context.Teams.OrderBy(t => t.Name).ToListAsync(); 
             TeamOptions = new SelectList(teams, "Idteam", "Name");
 
             Match.Date = DateOnly.FromDateTime(DateTime.Today);
@@ -36,12 +36,12 @@ namespace BackendRazor.Pages.Admin.Matches
        public async Task<IActionResult> OnPostAsync()
         {
 
-            if (Match.Date < DateOnly.FromDateTime(DateTime.Today))
+            if (Match.Date < DateOnly.FromDateTime(DateTime.Today)) //validare data
             {
                 ModelState.AddModelError("Match.Date", "Data nu poate fi în trecut.");
             }
 
-            if (Match.Idhome == Match.Idguest)
+            if (Match.Idhome == Match.Idguest) //validare echipe diferite
             {
                 ModelState.AddModelError(string.Empty, "Echipele trebuie să fie diferite.");
             }

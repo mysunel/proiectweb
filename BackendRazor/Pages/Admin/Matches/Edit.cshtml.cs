@@ -62,7 +62,7 @@ namespace BackendRazor.Pages.Admin.Matches
             int sumPointsHome = HomePlayers.Sum(p => PlayerStats.ContainsKey(p.Idplayer) ? (PlayerStats[p.Idplayer].Points ?? 0) : 0);
             int sumPointsGuest = GuestPlayers.Sum(p => PlayerStats.ContainsKey(p.Idplayer) ? (PlayerStats[p.Idplayer].Points ?? 0) : 0);
 
-            if (Match.Scorehome != sumPointsHome)
+            if (Match.Scorehome != sumPointsHome) //validare puncte totale
                 ModelState.AddModelError("Match.Scorehome", $"Suma punctelor gazdă ({sumPointsHome}) != {Match.Scorehome}");
             if (Match.Scoreguest != sumPointsGuest)
                 ModelState.AddModelError("Match.Scoreguest", $"Suma punctelor oaspeți ({sumPointsGuest}) != {Match.Scoreguest}");
@@ -80,7 +80,7 @@ namespace BackendRazor.Pages.Admin.Matches
             dbMatch.Scorehome = Match.Scorehome;
             dbMatch.Scoreguest = Match.Scoreguest;
 
-            foreach (var entry in PlayerStats)
+            foreach (var entry in PlayerStats) // sincronizare statistici jucatori
             {
                 var playerId = entry.Key;
                 var submittedStat = entry.Value;

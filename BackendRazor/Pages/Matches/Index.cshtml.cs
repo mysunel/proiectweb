@@ -25,11 +25,11 @@ namespace MyApp.Pages.Matches
         public int TotalPages { get; set; }
         public int PageSize { get; set; } = 5;
 
-        [BindProperty(SupportsGet = true)]
-        public string? CurrentSort { get; set; }
+        [BindProperty(SupportsGet = true)]    //pastreaza soortarea si pentru urmatoarele pagini (paginare)
+        public string? CurrentSort { get; set; }  
 
-        [BindProperty(SupportsGet = true)]
-        public string? CurrentFilter { get; set; }
+        [BindProperty(SupportsGet = true)]     //pastreaza filtrarea si pentru urmatoarele pagini (paginare)
+        public string? CurrentFilter { get; set; } 
 
         public async Task OnGetAsync(int? p, string sortOrder, string searchString)
         {
@@ -52,7 +52,7 @@ namespace MyApp.Pages.Matches
                     .Where(m => m.Date.ToDateTime(TimeOnly.MinValue) < DateTime.Today || (m.Scorehome != null && m.Scoreguest != null))
                     .AsQueryable();
 
-                if (!string.IsNullOrEmpty(searchString))
+                if (!string.IsNullOrEmpty(searchString))  //filtrare dupa nume echipa
                 {
                     string search = searchString.ToLower();
                     completedQuery = completedQuery.Where(m => 
@@ -74,7 +74,7 @@ namespace MyApp.Pages.Matches
 
                 if (CurrentPage > TotalPages && TotalPages > 0) CurrentPage = TotalPages;
 
-                CompletedMatches = await completedQuery
+                CompletedMatches = await completedQuery  //paginare
                     .Skip((CurrentPage - 1) * PageSize)
                     .Take(PageSize)
                     .ToListAsync();
